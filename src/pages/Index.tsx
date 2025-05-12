@@ -23,22 +23,21 @@ const Index: React.FC = () => {
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
 
   const { data, isLoading, error, refetch } = useQuery({
-    queryKey: ["vehicles", activeTab, currentPage],
-    queryFn: () => fetchVehicles(activeTab, currentPage),
+    queryKey: ["allVehicles", activeTab],
+    queryFn: () => fetchVehicles(activeTab),
   });
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      console.log("Atualizou as infos dos veículos", data)
+      console.log("Atualizou as infos dos veículos", data);
       refetch();
-    }, 120000); 
+    }, 120000);
 
     return () => clearInterval(intervalId);
   }, [refetch]);
 
-  const vehicles = data?.content?.vehicles || [];
-  const vehicleLocations = data?.content?.locationVehicles || [];
-  const totalPages = data?.content?.totalPages || 1;
+  const vehicles = data?.vehicles || [];
+  const vehicleLocations = data?.locationVehicles || [];
 
   const findLocationForVehicle = (
     plate: string
@@ -68,7 +67,7 @@ const Index: React.FC = () => {
 
       <main className="flex-grow px-6 md:px-12 py-4">
         <div className="mb-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center w-full gap-2 border-b border-[#002D44] pb-4">
             <h2 className="text-lg font-medium mr-4">Lista</h2>
             <div className="flex items-center gap-4">
               <button
@@ -129,7 +128,7 @@ const Index: React.FC = () => {
             selectedVehicleId={selectedVehicleId || undefined}
             onMarkerClick={handleMarkerClick}
             isLoading={isLoading}
-            onRefresh={refetch}
+            googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}
           />
         )}
 
@@ -138,34 +137,6 @@ const Index: React.FC = () => {
           isLoading={isLoading}
           onVehicleClick={handleVehicleClick}
         />
-
-        {totalPages > 1 && (
-          <div className="flex justify-between items-center mt-4">
-            <div className="text-sm text-gray-400">
-              Página {currentPage} de {totalPages}
-            </div>
-            <div className="flex gap-2">
-              <Button
-                variant="outlineDark"
-                size="sm"
-                onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
-                disabled={currentPage <= 1 || isLoading}
-              >
-                Anterior
-              </Button>
-              <Button
-                variant="outlineDark"
-                size="sm"
-                onClick={() =>
-                  setCurrentPage((prev) => Math.min(totalPages, prev + 1))
-                }
-                disabled={currentPage >= totalPages || isLoading}
-              >
-                Próxima
-              </Button>
-            </div>
-          </div>
-        )}
       </main>
 
       <VehicleDetailsDialog

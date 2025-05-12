@@ -65,7 +65,7 @@ export default {
 					ring: 'hsl(var(--sidebar-ring))'
 				},
 				navy: {
-					DEFAULT: '#001529',
+					DEFAULT: '#001622',
 					light: '#0a2540'
 				},
 				map: {

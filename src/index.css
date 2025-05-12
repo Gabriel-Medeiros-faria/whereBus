@@ -94,7 +94,6 @@
   }
 }
 
-/* Mapbox Popup Styling */
 .mapboxgl-popup-content {
   @apply bg-navy-light text-white p-2 rounded-md shadow-lg border border-gray-700;
 }
@@ -108,7 +107,6 @@
   @apply text-white;
 }
 
-/* Vehicle marker colors */
 .vehicle-marker-green {
   @apply bg-map-green text-white rounded-full flex items-center justify-center h-8 w-8;
   box-shadow: 0 0 0 2px white;

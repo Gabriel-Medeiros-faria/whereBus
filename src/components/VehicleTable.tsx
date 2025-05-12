@@ -41,7 +41,7 @@ const VehicleTable: React.FC<VehicleTableProps> = ({ vehicles, isLoading, onVehi
   }
 
   return (
-    <div className="w-full border border-gray-700 rounded-md">
+    <div className="w-full border border-gray-700 rounded-md bg-[#001E2E]">
       <ScrollArea className="h-[400px]">
         <Table>
           <TableHeader className="sticky top-0 bg-navy z-10">

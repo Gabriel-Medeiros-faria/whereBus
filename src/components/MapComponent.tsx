@@ -16,7 +16,7 @@ interface MapComponentProps {
   selectedVehicleId?: string;
   onMarkerClick: (vehicleLocation: VehicleLocation) => void;
   isLoading: boolean;
-  onRefresh?: () => void;
+  googleMapsApiKey: string;
 }
 
 const MapComponent: React.FC<MapComponentProps> = ({
@@ -24,6 +24,7 @@ const MapComponent: React.FC<MapComponentProps> = ({
   selectedVehicleId,
   onMarkerClick,
   isLoading,
+  googleMapsApiKey,
 }) => {
   const [mapInitError, setMapInitError] = useState("");
   const [selectedMarker, setSelectedMarker] = useState<VehicleLocation | null>(
@@ -32,7 +33,7 @@ const MapComponent: React.FC<MapComponentProps> = ({
   const mapRef = useRef<google.maps.Map | null>(null);
 
   const { isLoaded, loadError } = useJsApiLoader({
-    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY as string,
+    googleMapsApiKey,
   });
 
   const onLoad = useCallback(
@@ -84,8 +85,7 @@ const MapComponent: React.FC<MapComponentProps> = ({
   }
 
   return (
-    <div
-      className="bg-navy-light rounded-md p-4 mb-4">
+    <div className="bg-navy-light rounded-md p-4 mb-4 border border-[#002D44]">
       <h3 className="text-lg font-semibold mb-2">Mapa rastreador</h3>
       <div className="h-[500px] rounded-md overflow-hidden border border-custom">
         <GoogleMap
@@ -101,6 +101,7 @@ const MapComponent: React.FC<MapComponentProps> = ({
               mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
             >
               <div
+                data-testid="map-marker"
                 onClick={() => handleMarkerClick(location)}
                 style={{
                   position: "absolute",
